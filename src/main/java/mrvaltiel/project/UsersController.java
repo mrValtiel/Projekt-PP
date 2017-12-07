@@ -1,45 +1,54 @@
 package mrvaltiel.project;
 
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.jsondoc.core.annotation.Api;
+import org.jsondoc.core.annotation.ApiMethod;
+import org.jsondoc.core.annotation.ApiPathParam;
+import org.jsondoc.core.pojo.ApiStage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/users")
+@Api(name = "Users API", description = "Provides a list of methods, that manage users", stage = ApiStage.RC)
 public class UsersController
 {
-    private List<User> users;
+    private UsersRepository usersRepository;
 
-    public UsersController()
+    @Autowired
+    public UsersController(UsersRepository usersRepository)
     {
-        users = new ArrayList<>();
-
-        users.add(new User(1, "Jan", "Kowalski", "1965-02-04","jankow"));
-        users.add(new User(2, "Mariusz", "Depka", "1975-06-12", "mardep"));
-        users.add(new User(3, "Arkadiusz", "Mały", "1982-05-24", "arkmal"));
+        this.usersRepository = usersRepository;
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @ApiMethod(description = "Get all users from the database")
     public List<User> getAll()
     {
-        return users;
+        return usersRepository.findByIsDeletedFalse();
     }
 
     @RequestMapping(value = "/deleted", method = RequestMethod.GET)
+    @ApiMethod(description = "Get all the deleted users from the database")
     public List<User> getDeleted()
     {
-        return users.stream().filter(x -> x.getIsDeleted() == true).collect(Collectors.toList());
+        return usersRepository.findByIsDeletedTrue();
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @ApiMethod(description = "Create new user and save it to the database")
     public List<User> create(@RequestBody User user)
     {
-        users.add(user);
-        return users;
+        usersRepository.save(user);
+        return usersRepository.findByIsDeletedFalse();
+    }
+
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.POST)
+    @ApiMethod(description = "Remove user with provided ID from the database")
+    public List<User> remove(@ApiPathParam(name = "id") @PathVariable long id)
+    {
+        usersRepository.delete(id);
+        return usersRepository.findByIsDeletedFalse();
     }
 }
