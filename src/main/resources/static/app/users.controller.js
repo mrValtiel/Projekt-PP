@@ -13,11 +13,19 @@
         vm.getAll = getAll;
         vm.getDeleted = getDeleted;
         vm.deleteUser = deleteUser;
+        vm.addUser = addUser;
 
         init();
 
         function init(){
             getAll();
+        }
+
+        function addUser(){
+            var url = "/users/create";
+            $http.post(url).then(function(response){
+                vm.users = response.data;
+            });
         }
 
         function getAll(){

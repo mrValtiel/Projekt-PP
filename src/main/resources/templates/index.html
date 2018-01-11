@@ -29,7 +29,7 @@
             <!-- show all users or only these deleted -->
             <div class="btn-group" role="group">
                 <button ng-click="vm.getAll()" type="button" class="btn btn-default">All</button>
-                <button ng-click="vm.getDeleted()" type="button" class="btn btn-default">Deleted</button>
+                <!-- <button ng-click="vm.getDeleted()" type="button" class="btn btn-default">Deleted</button> -->
             </div>
 
             <!-- table for users -->
@@ -57,6 +57,20 @@
             </table>
 
         </div>
+    </div>
+    <div style="margin-left: 10px;">
+        <p>Add User</p>
+        <form action=vm.addUser() method="post">
+            <p>Name:</p>
+            <input type="text" name="name"><br>
+            <p>Surname:</p>
+            <input type="text" name="surname"><br>
+            <p>BirthDay:</p>
+            <input type="text" name="birthDay"><br>
+            <p>Login:</p>
+            <input type="text" name="login"><br>
+            <input type="submit" value="Add"><br>
+        </form>
     </div>
 </div>
 
