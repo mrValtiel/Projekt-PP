@@ -8,8 +8,9 @@
     <script type="text/javascript" src="../static/angular.min.js" th:src="@{/angular.min.js}"></script>
     <script type="text/javascript" src="../static/app/app.module.js" th:src="@{/app/app.module.js}"></script>
     <script type="text/javascript" src="../static/app/users.controller.js" th:src="@{/app/users.controller.js}"></script>
+
 </head>
-<body ng-app="app" ng-controller="UsersController as vm">
+<body  ng-app="app" ng-controller="UsersController as vm">
 
 <header>
     <nav class="navbar navbar-default">
@@ -58,18 +59,17 @@
 
         </div>
     </div>
-    <div style="margin-left: 10px;">
+    <div>
         <p>Add User</p>
-
         <p>Name:</p>
-        <input type="text" name="name" id="_name"></input> <!-- ng-model="item.name" -->
+        <input type="text" ng-model="name" id="inputName"/>
         <p>Surname:</p>
-        <input type="text" name="surname" id="_surname"></input>
+        <input type="text" ng-model="surname" id="inputSurname"/>
         <p>BirthDay:</p>
-        <input type="text" name="birthDay" id="_birthDay"></input>
+        <input type="text" ng-model="birthDay" id="inputBirthDay"/>
         <p>Login:</p>
-        <input type="text" name="login" id="_login"></input>
-        <button type="button" id="addButton" ng-click="vm.addUser()">Add</button>
+        <input type="text" ng-model="login" id="inputLogin"/>
+        <button ng-click="vm.addUser()">Add</button>
     </div>
 </div>
 

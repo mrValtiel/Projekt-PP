@@ -1,32 +1,43 @@
-(function (){
-    'use strict';
+'use strict';
 
-    angular
-        .module('app')
-        .controller('UsersController', UsersController);
+angular
+    .module('app')
+    .controller('UsersController', UsersController);
 
-    UsersController.$inject = ['$http'];
+function UsersController($scope, $http) {
+    var vm = this;
+    vm.users = [];
+    vm.getAll = getAll;
+    vm.getDeleted = getDeleted;
+    vm.deleteUser = deleteUser;
+    vm.addUser = addUser;
 
-    function UsersController($http) {
-        var vm = this;
-        vm.users = [];
-        vm.getAll = getAll;
-        vm.getDeleted = getDeleted;
-        vm.deleteUser = deleteUser;
-        vm.addUser = addUser;
+    init();
 
-        init();
+    function init() {
+        getAll();
+    }
 
-        function init() {
-            getAll();
-        }
-
-        /* function addUser(){
+        function addUser(){
             var url = "/users/create";
-            $http.post(url).then(function(response){
+            console.log("Trying to add new user");
+            var data = {
+                name: $scope.name,
+                surname: $scope.surname,
+                birthDay: $scope.birthDay,
+                login: $scope.login
+            }
+            console.log(data);
+
+            $http.post(url, data).then(function(response){
                 vm.users = response.data;
             });
-        } */
+
+            document.getElementById("inputName").value = "";
+            document.getElementById("inputSurname").value = "";
+            document.getElementById("inputBirthDay").value = "";
+            document.getElementById("inputLogin").value = "";
+        }
 
         function getAll() {
             var url = "/users/all";
@@ -50,32 +61,4 @@
                 vm.users = response.data;
             });
         }
-
-        /* NOT WORKING */
-        function addUser() {
-            console.log("Button clicked, script works");
-
-            var _name = document.getElementById("_name");
-            console.log("Input name: " + _name);
-            var _surname = document.getElementById("_name");
-            console.log("Input surname: " + _surname);
-            var _birthDay = document.getElementById("_birthDay");
-            console.log("Input birthDay: " + _birthDay);
-            var _login = document.getElementById("_login");
-            console.log("Input login: " + _login);
-
-            var User = {
-                name: _name,
-                surname: _surname,
-                birthDay: _birthDay,
-                login: _login
-            };
-
-            var url = "/users/create";
-            $http.post(url).then(function (response) {
-                vm.users = response.data;
-            });
-        }
-    }
-
-})();
+}
